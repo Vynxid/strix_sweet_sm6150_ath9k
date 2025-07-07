@@ -103,7 +103,7 @@ jobs:
         find out -name "cfg80211.ko" -exec cp {} out/modules/ \;
 
     - name: Загрузка модулей ath9k # Upload ath9k modules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ath9k-modules
         path: out/modules/
