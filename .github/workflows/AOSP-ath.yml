@@ -84,3 +84,20 @@ jobs:
       with:
         name: STRIX-Interstellar-AOSP-${{ env.BUILD_TIME }}
         path: AnyKernel3/*
+        
+   - name: Сбор и загрузка модулей ath9k # Collect and Upload ath9k modules
+      run: |
+        mkdir -p out/modules
+        find out -name "ath.ko" -exec cp {} out/modules/ \;
+        find out -name "ath9k.ko" -exec cp {} out/modules/ \;
+        find out -name "ath9k_common.ko" -exec cp {} out/modules/ \;
+        find out -name "ath9k_htc.ko" -exec cp {} out/modules/ \;
+        find out -name "ath9k_hw.ko" -exec cp {} out/modules/ \;
+        find out -name "mac80211.ko" -exec cp {} out/modules/ \;
+        find out -name "cfg80211.ko" -exec cp {} out/modules/ \;
+
+    - name: Загрузка модулей ath9k # Upload ath9k modules
+      uses: actions/upload-artifact@v3
+      with:
+        name: ath9k-modules
+        path: out/modules/
