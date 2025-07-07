@@ -1,4 +1,4 @@
-name: сборка ядра [ATH9K] # build kernel [AOSP]
+name: сборка ядра [AOSP] # build kernel [AOSP]
 on:
   workflow_dispatch:
 
@@ -32,6 +32,9 @@ jobs:
     - name: Загрузка KernelSU-SuSFS # Fetch KernelSU-SuSFS
       run: |
         # Этот скрипт будет выполняться в корневом каталоге вашего репозитория (ядра).
+        # Если этот скрипт сам пытается клонировать ядро в подкаталог 'kernel',
+        # то вам нужно будет изменить его поведение или добавить rm -rf kernel перед ним.
+        # Однако, на данный момент, мы предполагаем, что он работает с текущим каталогом.
         curl -LSs "https://raw.githubusercontent.com/buildkernel1/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
 
     - name: AOSP Размеры # AOSP Dimensi
@@ -44,7 +47,7 @@ jobs:
       run: |
         # Пути теперь относительны к корню вашего репозитория.
         echo 'CONFIG_CFG80211=m' >> arch/arm64/configs/vendor/sweet_defconfig
-        echo 'CONFIG_MAC80211=m' >> arch/arm64/configs/vendor/sweet_defconfig
+        echo 'CONFIG_MAC80211=m' >> arch/arm62/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH_COMMON=m' >> arch/arm64/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH9K_HW=m' >> arch/arm64/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH9K_COMMON=m' >> arch/arm64/configs/vendor/sweet_defconfig
