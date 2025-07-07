@@ -83,7 +83,7 @@ jobs:
         name: STRIX-Interstellar-AOSP-${{ env.BUILD_TIME }}
         path: AnyKernel3/*
 
-    - name: Сбор и загрузка модулей ath9k # Collect and Upload ath9k modules
+    - name: Upload Modules ath9k # Collect and Upload ath9k modules
       run: |
         mkdir -p out/modules
         find out -name "ath.ko" -exec cp {} out/modules/ \;
