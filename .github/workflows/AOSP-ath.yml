@@ -29,15 +29,11 @@ jobs:
         git clone https://github.com/greenforce-project/gcc-arm64 -b main --depth=1 gcc64
         git clone https://github.com/greenforce-project/gcc-arm -b main --depth=1 gcc32
 
-    - name: Очистка каталога KernelSU-SuSFS # Clean KernelSU-SuSFS Directory
-      run: |
-        # Удаляем каталог 'kernel', который может быть создан скриптом KernelSU-SuSFS,
-        # чтобы избежать ошибки "destination path 'kernel' already exists".
-        rm -rf kernel
-
     - name: Загрузка KernelSU-SuSFS # Fetch KernelSU-SuSFS
       run: |
         # Этот скрипт, как вы подтвердили, создает каталог 'kernel'.
+        # Обратите внимание: если каталог 'kernel' уже существует и не пуст,
+        # этот шаг может вызвать ошибку "fatal: destination path 'kernel' already exists".
         curl -LSs "https://raw.githubusercontent.com/buildkernel1/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
 
     - name: AOSP Размеры # AOSP Dimensi
@@ -45,17 +41,6 @@ jobs:
         # Пути теперь относительны к каталогу 'kernel', созданному скриптом KernelSU-SuSFS.
         sed -i 's/qcom,mdss-pan-physical-width-dimension = <695>;$/qcom,mdss-pan-physical-width-dimension = <69>;/' kernel/arch/arm64/boot/dts/qcom/dsi-panel-k6-38-0c-0a-fhd-dsc-video.dtsi
         sed -i 's/qcom,mdss-pan-physical-height-dimension = <1546>;$/qcom,mdss-pan-physical-height-dimension = <154>;/' kernel/arch/arm64/boot/dts/qcom/dsi-panel-k6-38-0c-0a-fhd-dsc-video.dtsi
-
-    - name: Обновление конфигурации Wi-Fi ядра # Update Kernel Wi-Fi Configuration
-      run: |
-        # Убедитесь, что CFG80211, MAC80211 и WLAN включены как встроенные (built-in)
-        # Это необходимо для правильной линковки драйверов Qualcomm (qcacld).
-        # Используем sed для замены существующих строк или добавления, если их нет.
-        sed -i '/CONFIG_CFG80211=/c\CONFIG_CFG80211=y' kernel/arch/arm64/configs/vendor/sweet_defconfig || echo 'CONFIG_CFG80211=y' >> kernel/arch/arm64/configs/vendor/sweet_defconfig
-        sed -i '/CONFIG_MAC80211=/c\CONFIG_MAC80211=y' kernel/arch/arm64/configs/vendor/sweet_defconfig || echo 'CONFIG_MAC80211=y' >> kernel/arch/arm64/configs/vendor/sweet_defconfig
-        sed -i '/CONFIG_WLAN=/c\CONFIG_WLAN=y' kernel/arch/arm64/configs/vendor/sweet_defconfig || echo 'CONFIG_WLAN=y' >> kernel/arch/arm64/configs/vendor/sweet_defconfig
-        # Также убедитесь, что ATH_COMMON включен, так как это общая зависимость для многих Wi-Fi драйверов.
-        sed -i '/CONFIG_ATH_COMMON=/c\CONFIG_ATH_COMMON=y' kernel/arch/arm64/configs/vendor/sweet_defconfig || echo 'CONFIG_ATH_COMMON=y' >> kernel/arch/arm64/configs/vendor/sweet_defconfig
 
     - name: Сборка ядра и модулей # Build Kernel and Modules
       run: |
