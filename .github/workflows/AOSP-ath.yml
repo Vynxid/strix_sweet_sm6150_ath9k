@@ -42,6 +42,11 @@ jobs:
         sed -i 's/qcom,mdss-pan-physical-width-dimension = <695>;$/qcom,mdss-pan-physical-width-dimension = <69>;/' arch/arm64/boot/dts/qcom/dsi-panel-k6-38-0c-0a-fhd-dsc-video.dtsi
         sed -i 's/qcom,mdss-pan-physical-height-dimension = <1546>;$/qcom,mdss-pan-physical-height-dimension = <154>;/' arch/arm64/boot/dts/qcom/dsi-panel-k6-38-0c-0a-fhd-dsc-video.dtsi
 
+    - name: Исправление синтаксической ошибки в msm_vidc_debug.c # Fix syntax error in msm_vidc_debug.c
+      run: |
+        # Добавляем точку с запятой в конце строки 609
+        sed -i '609s/int msm_vidc_debug = 0/int msm_vidc_debug = 0;/' drivers/media/platform/msm/vidc/msm_vidc_debug.c
+
     - name: Сборка ядра и модулей # Build Kernel and Modules
       run: |
         export ARCH=arm64
