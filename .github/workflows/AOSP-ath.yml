@@ -1,4 +1,4 @@
-name: сборка ядра [ATH9K] # build kernel [AOSP]
+name: сборка ядра [ATH9K-16] # build kernel [AOSP]
 on:
   workflow_dispatch:
 
