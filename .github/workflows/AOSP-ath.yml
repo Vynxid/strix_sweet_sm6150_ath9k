@@ -1,4 +1,4 @@
-name: сборка ядра [ATH9K-16] # build kernel [AOSP]
+name: сборка ядра [ATH9K] # build kernel [AOSP]
 on:
   workflow_dispatch:
 
@@ -47,7 +47,7 @@ jobs:
       run: |
         # Пути теперь относительны к корню вашего репозитория.
         echo 'CONFIG_CFG80211=m' >> arch/arm64/configs/vendor/sweet_defconfig
-        echo 'CONFIG_MAC80211=m' >> arch/arm62/configs/vendor/sweet_defconfig
+        echo 'CONFIG_MAC80211=m' >> arch/arm64/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH_COMMON=m' >> arch/arm64/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH9K_HW=m' >> arch/arm64/configs/vendor/sweet_defconfig
         echo 'CONFIG_ATH9K_COMMON=m' >> arch/arm64/configs/vendor/sweet_defconfig
