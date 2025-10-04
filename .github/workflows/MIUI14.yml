@@ -25,6 +25,14 @@ jobs:
             mkdir clang && curl  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -RLO && tar -C clang/ -xf clang-*.tar.gz
             git clone https://github.com/greenforce-project/gcc-arm64 -b main --depth=1 gcc64
             git clone https://github.com/greenforce-project/gcc-arm -b main --depth=1 gcc32
+
+    - name: Add SUSFS Remote and Cherry-pick
+      run: |
+          git remote add susfs https://gitlab.com/simonpunk/susfs4ksu.git
+          git fetch susfs
+          # Cherry-pick SUSFS v1.5.10
+          git cherry-pick 0e19a05277d28182c7b653580117145c53e69e92 || true
+
                                     
     - name: Fetch KernelSU-SuSFS
       run: |
